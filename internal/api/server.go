@@ -31,7 +31,7 @@ func (server *Server) setupRouter() {
 
 	api.GET("/health", server.healthCheck)
 
-	feeds := api.Group("/feeds")
+	// feeds := api.Group("/feeds")
 
 	server.router = router
 }

@@ -3,8 +3,6 @@ package util
 import (
 	"testing"
 
-	"testing"
-
 	"github.com/stretchr/testify/require"
 )
 

@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS feeds (
+    feed_id SERIAL PRIMARY KEY,
+    feed_name VARCHAR(50) NOT NULL,
+    url VARCHAR(255) NOT NULL UNIQUE,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
