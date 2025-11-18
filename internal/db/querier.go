@@ -9,10 +9,10 @@ import (
 )
 
 type Querier interface {
-	CompleteTask(ctx context.Context, arg CompleteTaskParams) (Feed, error)
 	CreateFeed(ctx context.Context, arg CreateFeedParams) (Feed, error)
 	DeleteFeed(ctx context.Context, feedID int32) error
 	GetAllFeeds(ctx context.Context, arg GetAllFeedsParams) ([]Feed, error)
+	GetOneFeedById(ctx context.Context, feedID int32) (Feed, error)
 	UpdateFeed(ctx context.Context, arg UpdateFeedParams) (Feed, error)
 }
 

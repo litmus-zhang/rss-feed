@@ -10,9 +10,9 @@ UPDATE feeds SET  feed_name = $2, url=$3, description=$4 WHERE feed_id = $1
 RETURNING *;
 
 
--- name: CompleteTask :one
-UPDATE feeds SET  feed_name = $2 WHERE feed_id = $1
-RETURNING *;
+-- name: GetOneFeedById :one
+SELECT * FROM feeds WHERE feed_id = $1;
+
 
 
 -- name: DeleteFeed :exec

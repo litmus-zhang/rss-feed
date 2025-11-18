@@ -10,29 +10,6 @@ import (
 	"database/sql"
 )
 
-const completeTask = `-- name: CompleteTask :one
-UPDATE feeds SET  feed_name = $2 WHERE feed_id = $1
-RETURNING feed_id, feed_name, url, description, created_at
-`
-
-type CompleteTaskParams struct {
-	FeedID   int32  `json:"feed_id"`
-	FeedName string `json:"feed_name"`
-}
-
-func (q *Queries) CompleteTask(ctx context.Context, arg CompleteTaskParams) (Feed, error) {
-	row := q.db.QueryRowContext(ctx, completeTask, arg.FeedID, arg.FeedName)
-	var i Feed
-	err := row.Scan(
-		&i.FeedID,
-		&i.FeedName,
-		&i.Url,
-		&i.Description,
-		&i.CreatedAt,
-	)
-	return i, err
-}
-
 const createFeed = `-- name: CreateFeed :one
 INSERT INTO feeds (feed_name, url, description) VALUES ($1, $2, $3)
 RETURNING feed_id, feed_name, url, description, created_at
@@ -105,6 +82,23 @@ func (q *Queries) GetAllFeeds(ctx context.Context, arg GetAllFeedsParams) ([]Fee
 		return nil, err
 	}
 	return items, nil
+}
+
+const getOneFeedById = `-- name: GetOneFeedById :one
+SELECT feed_id, feed_name, url, description, created_at FROM feeds WHERE feed_id = $1
+`
+
+func (q *Queries) GetOneFeedById(ctx context.Context, feedID int32) (Feed, error) {
+	row := q.db.QueryRowContext(ctx, getOneFeedById, feedID)
+	var i Feed
+	err := row.Scan(
+		&i.FeedID,
+		&i.FeedName,
+		&i.Url,
+		&i.Description,
+		&i.CreatedAt,
+	)
+	return i, err
 }
 
 const updateFeed = `-- name: UpdateFeed :one

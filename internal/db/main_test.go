@@ -33,6 +33,16 @@ func TestMain(m *testing.M) {
 	testDB.Close()
 }
 
+func clearTestTables(db *sql.DB) {
+	tables := []string{"feeds"} // Add your table names
+	for _, table := range tables {
+		_, err := db.Exec(fmt.Sprintf("TRUNCATE TABLE %s RESTART IDENTITY CASCADE", table))
+		if err != nil {
+			log.Fatalf("Failed to truncate table %s: %v", table, err)
+		}
+	}
+}
+
 func CreateTestFeed(t *testing.T) Feed {
 
 	args := CreateFeedParams{

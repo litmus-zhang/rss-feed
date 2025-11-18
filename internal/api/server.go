@@ -31,7 +31,13 @@ func (server *Server) setupRouter() {
 
 	api.GET("/health", server.healthCheck)
 
-	// feeds := api.Group("/feeds")
+	feeds := api.Group("/feeds")
+
+	feeds.POST("/", server.createFeed)
+	feeds.GET("/:id", server.getOneFeed)
+	feeds.GET("/", server.getAllFeeds)
+	feeds.PUT("/:id", server.updateFeed)
+	feeds.DELETE("/:id", server.deleteFeed)
 
 	server.router = router
 }
@@ -42,6 +48,8 @@ func (server *Server) Start() error {
 	return server.router.Run(server.config.HttpServerAddress)
 }
 
-func errorResponse(err error) gin.H {
-	return gin.H{"error": err.Error()}
+func errResponse(c *gin.Context, code int, message string) {
+	c.JSON(code, gin.H{
+		"error": message,
+	})
 }
