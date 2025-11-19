@@ -1,4 +1,5 @@
-DB_URL=postgresql://root:root@localhost:5432/rss_feed?sslmode=disable
+# DB_URL=postgresql://root:root@localhost:5432/rss_feed?sslmode=disable
+DB_URL=postgres://postgres:postgres@localhost:5432/rss_feed?sslmode=disable
 
 startdb:
 	@echo "Starting Postgres..."
@@ -34,6 +35,9 @@ test:
 
 server:
 	go run cmd/main.go
+
+build:
+   CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o main cmd/main.go
 
 mock:
 	mockgen -package mockdb -destination internal/db/mock/store.go github.com/litmus-zhang/task_manager/internal/db Store
